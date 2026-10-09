@@ -1,0 +1,160 @@
+---
+import datos from '../data/datos.json';
+import lago from '../assets/fotos/lago.webp';
+
+// Tarjeta para raspar con el premio, debajo del acta. El premio está en el HTML
+// desde el principio, tapado por un canvas dorado que se borra con el dedo.
+const { antetitulo, titulo, texto, firma } = datos.premio;
+---
+
+<section class="raspe-wrap">
+  <h2>Y un anexo</h2>
+  <p class="lede">Porque un acuerdo sin cumplimiento no sirve de nada. Ráspalo para verlo.</p>
+  <div class="raspe" id="raspe">
+    <div class="premio" id="premio" aria-hidden="true">
+      <img src={lago.src} width={lago.width} height={lago.height} alt="" />
+      <div class="premio-texto">
+        <p class="ante">{antetitulo}</p>
+        <h3>{titulo}</h3>
+        <p>{texto}</p>
+        <p class="firma">{firma}</p>
+      </div>
+    </div>
+    <canvas id="capa" aria-hidden="true"></canvas>
+  </div>
+  <button type="button" class="revelar" id="revelar">¿No puedes raspar? Toca aquí para verlo</button>
+</section>
+
+<script>
+  const raspe = document.getElementById('raspe')!;
+  const premio = document.getElementById('premio')!;
+  const canvas = document.getElementById('capa') as HTMLCanvasElement;
+  const boton = document.getElementById('revelar') as HTMLButtonElement;
+  const ctx = canvas.getContext('2d', { willReadFrequently: true })!;
+
+  const UMBRAL = 0.55; // porción raspada para dar el premio por descubierto
+  let ancho = 0;
+  let alto = 0;
+  let dpr = 1;
+  let raspando = false;
+  let ultimo: { x: number; y: number } | null = null;
+  let trazos = 0;
+  let revelado = false;
+
+  function pintarCapa() {
+    const caja = raspe.getBoundingClientRect();
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    ancho = caja.width;
+    alto = caja.height;
+    canvas.width = ancho * dpr;
+    canvas.height = alto * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.globalCompositeOperation = 'source-over';
+
+    // Dorado de girasol, con brillo diagonal.
+    const g = ctx.createLinearGradient(0, 0, ancho, alto);
+    g.addColorStop(0, '#F5BD2E');
+    g.addColorStop(0.45, '#FFE08A');
+    g.addColorStop(0.55, '#F2B31B');
+    g.addColorStop(1, '#D9820A');
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, ancho, alto);
+
+    // Textura de semillas, para que se note que es una capa.
+    ctx.fillStyle = 'rgba(74,46,22,.08)';
+    for (let y = 8; y < alto; y += 16) {
+      for (let x = (y / 16) % 2 ? 8 : 16; x < ancho; x += 16) {
+        ctx.beginPath();
+        ctx.arc(x, y, 1.6, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    ctx.fillStyle = '#4A2E16';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    const grande = Math.min(40, ancho / 9);
+    ctx.font = `${grande}px Caprasimo, Georgia, serif`;
+    ctx.fillText('Raspa aquí 🌻', ancho / 2, alto / 2 - grande * 0.45);
+    ctx.font = `600 ${Math.max(14, grande * 0.42)}px Karla, sans-serif`;
+    ctx.fillText('Anexo al acta', ancho / 2, alto / 2 + grande * 0.65);
+  }
+
+  function punto(e: PointerEvent) {
+    const caja = canvas.getBoundingClientRect();
+    return { x: e.clientX - caja.left, y: e.clientY - caja.top };
+  }
+
+  function raspar(desde: { x: number; y: number }, hasta: { x: number; y: number }) {
+    ctx.globalCompositeOperation = 'destination-out';
+    ctx.lineWidth = Math.max(36, ancho / 11);
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+    ctx.beginPath();
+    ctx.moveTo(desde.x, desde.y);
+    ctx.lineTo(hasta.x, hasta.y);
+    ctx.stroke();
+  }
+
+  // Cuánto se ha raspado, mirando una grilla de puntos en vez de todos los píxeles.
+  function porcionRaspada() {
+    const { data } = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    const paso = 12 * dpr;
+    let total = 0;
+    let vacios = 0;
+    for (let y = 0; y < canvas.height; y += paso) {
+      for (let x = 0; x < canvas.width; x += paso) {
+        total++;
+        if (data[(Math.floor(y) * canvas.width + Math.floor(x)) * 4 + 3] < 40) vacios++;
+      }
+    }
+    return vacios / total;
+  }
+
+  function revelar() {
+    if (revelado) return;
+    revelado = true;
+    raspe.classList.add('revelado');
+    premio.removeAttribute('aria-hidden');
+    boton.hidden = true;
+    window.dispatchEvent(new Event('fuegos'));
+  }
+
+  canvas.addEventListener('pointerdown', (e) => {
+    if (revelado) return;
+    raspando = true;
+    canvas.setPointerCapture(e.pointerId);
+    ultimo = punto(e);
+    raspar(ultimo, ultimo);
+  });
+
+  canvas.addEventListener('pointermove', (e) => {
+    if (!raspando || !ultimo || revelado) return;
+    const ahora = punto(e);
+    raspar(ultimo, ahora);
+    ultimo = ahora;
+    if (++trazos % 12 === 0 && porcionRaspada() > UMBRAL) revelar();
+  });
+
+  const soltar = () => {
+    if (!raspando) return;
+    raspando = false;
+    ultimo = null;
+    if (!revelado && porcionRaspada() > UMBRAL) revelar();
+  };
+  canvas.addEventListener('pointerup', soltar);
+  canvas.addEventListener('pointercancel', soltar);
+
+  boton.addEventListener('click', revelar);
+
+  // Se pinta cuando las fuentes ya cargaron, para que el "Raspa aquí" salga con la letra del sitio.
+  document.fonts.ready.then(pintarCapa);
+  let anchoPrevio = 0;
+  new ResizeObserver(([e]) => {
+    const w = Math.round(e.contentRect.width);
+    if (!revelado && w !== anchoPrevio) {
+      anchoPrevio = w;
+      pintarCapa();
+    }
+  }).observe(raspe);
+</script>

@@ -105,6 +105,12 @@
     { "foto": "lloron", "nombre": "Llorón" },
     { "foto": "margarita", "nombre": "Margarita" }
   ],
+  "premio": {
+    "antetitulo": "Anexo al acta · Punto 5",
+    "titulo": "Iremos a navegar por el lago, a lo menos una vez al año",
+    "texto": "Todos los años que vengan, sin plazo de término. Tú, yo, el lago y el volcán de fondo.",
+    "firma": "El potito se obliga a cumplirlo ⛵"
+  },
   "acuerdos": [
     "El potito reconoce que Valdés es la mejor abogada de familia de la Región de Los Lagos, y se obliga a seguir diciéndolo aunque ella diga \"JAJAJA TU CREES\".",
     "Toda solicitud de lechita formulada después de las 22:00 horas se entenderá acogida, con o sin chocolate.",

@@ -1,7 +1,7 @@
 ---
-// Fuegos artificiales al llegar al final de la página. Un canvas fijo encima de
-// todo (sin capturar clics) que se enciende una sola vez cuando el footer entra
-// en pantalla. Si el sistema pide menos movimiento, la función es más corta.
+// Fuegos artificiales. Un canvas fijo encima de todo (sin capturar clics) que se
+// enciende al raspar la tarjeta del premio o, si no hay tarjeta, cuando el footer
+// entra en pantalla. Si el sistema pide menos movimiento, la función es más corta.
 ---
 
 <canvas id="fuegos" aria-hidden="true"></canvas>
@@ -142,8 +142,14 @@
     requestAnimationFrame(cuadro);
   }
 
-  if (footer) {
-    window.addEventListener('resize', ajustar);
+  window.addEventListener('resize', ajustar);
+
+  // Otros componentes pueden pedir fuegos con: window.dispatchEvent(new Event('fuegos')).
+  window.addEventListener('fuegos', encender);
+
+  // Si hay una tarjeta para raspar, los fuegos son el premio de rasparla.
+  // Si no, se encienden al llegar al footer.
+  if (footer && !document.querySelector('.raspe')) {
     const obs = new IntersectionObserver(
       (entradas) => {
         if (entradas.some((e) => e.isIntersecting)) {

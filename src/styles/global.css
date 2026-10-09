@@ -175,3 +175,25 @@ footer .f{font-family:var(--display);font-size:2rem;color:var(--ink)}
   .asomo.izq.visible{transform:translateX(-28%) rotate(14deg)}
   .asomo.der.visible{transform:translateX(28%) rotate(-14deg)}
 }
+
+/* ---------- Anexo para raspar ---------- */
+.raspe-wrap{padding-top:1rem;text-align:center}
+.raspe-wrap .lede{margin:0 auto}
+.raspe{position:relative;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;max-width:40rem;margin:1.8rem auto 0;border-radius:22px;overflow:hidden;box-shadow:0 18px 40px -22px rgba(40,50,40,.55);text-align:left}
+.premio{display:grid;grid-template-columns:42% 1fr;background:var(--paper);min-height:17rem}
+.premio img{width:100%;height:100%;object-fit:cover;object-position:50% 30%;display:block}
+.premio-texto{padding:1.6rem 1.5rem;display:flex;flex-direction:column;justify-content:center}
+.premio .ante{font-size:.8rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--stem)}
+.premio h3{font-size:clamp(1.45rem,4.2vw,1.9rem);margin:.5rem 0 .7rem;text-wrap:balance}
+.premio p{color:var(--soft)}
+.premio .firma{margin-top:1rem;font-family:var(--display);color:var(--petal-deep);font-size:1.1rem}
+#capa{position:absolute;inset:0;width:100%;height:100%;cursor:grab;touch-action:none;transition:opacity .8s ease}
+#capa:active{cursor:grabbing}
+.raspe.revelado #capa{opacity:0;pointer-events:none}
+.raspe.revelado .premio h3{animation:latido .9s cubic-bezier(.3,1.5,.5,1) .2s both}
+@keyframes latido{from{transform:scale(.9);opacity:.4}to{transform:none;opacity:1}}
+.revelar{margin-top:1rem;background:none;border:0;color:var(--soft);font-size:.9rem;text-decoration:underline;cursor:pointer}
+@media (max-width:540px){
+  .premio{grid-template-columns:1fr}
+  .premio img{height:11rem}
+}
