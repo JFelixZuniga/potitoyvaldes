@@ -1,0 +1,21 @@
+---
+import Girasol from './Girasol.astro';
+import datos from '../data/datos.json';
+
+// Se calcula en cada visita, en el edge: siempre muestra el día correcto.
+const inicio = new Date(datos.convivenciaDesde + 'T00:00:00Z');
+const hoy = new Date();
+const dias = Math.floor(
+  (Date.UTC(hoy.getUTCFullYear(), hoy.getUTCMonth(), hoy.getUTCDate()) - inicio.getTime()) / 86400000,
+);
+---
+
+<section class="hero">
+  <Girasol />
+  <h1>Feliz cumpleaños,<br />Valdés</h1>
+  <p class="sub">Un regalo hecho con nuestras propias palabras, de tu potito.</p>
+  <div class="counter">
+    <b>{dias.toLocaleString('es-CL')}</b><span>días viviendo juntos, 24/7</span>
+  </div>
+  <a class="scroll" href="#historia">Baja despacito ↓</a>
+</section>

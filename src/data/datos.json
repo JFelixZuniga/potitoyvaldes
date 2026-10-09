@@ -1,0 +1,93 @@
+{
+  "convivenciaDesde": "2020-01-01",
+  "cumpleanos": "10 de octubre de 2026",
+  "hitos": [
+    {
+      "cuando": "1 de enero de 2020",
+      "titulo": "Nos vamos a vivir juntos",
+      "texto": "Empezamos el año en la misma casa, en Santiago. Dos meses después llegó la pandemia y el teletrabajo, y desde entonces compartimos cada día: escritorio, almuerzo, cafecito y todo lo demás."
+    },
+    {
+      "cuando": "5 de septiembre de 2022",
+      "titulo": "Rumbo al sur",
+      "texto": "Dejamos Santiago y llegamos a Puerto Montt. Cambiamos el smog por la lluvia, y nunca miramos atrás."
+    },
+    {
+      "cuando": "Junio de 2023",
+      "titulo": "Nuestra casa en Fresia",
+      "texto": "Compramos casa y nos mudamos ese mismo mes. Desde entonces hay fueguito, leña, vecinos y un hogar que es nuestro."
+    },
+    {
+      "cuando": "13 de septiembre de 2024",
+      "titulo": "Nos casamos",
+      "texto": "El día en que Valdés y su potito lo hicieron oficial."
+    },
+    {
+      "cuando": "Agosto 2025 a septiembre 2026",
+      "titulo": "Un año en nuestro chat",
+      "texto": "Audiencias, pancitos, lechitas, clases, concursos y miles de \"jajaja\". Lo que sigue salió de ahí."
+    },
+    {
+      "cuando": "10 de octubre de 2026",
+      "titulo": "Hoy, tu día",
+      "texto": "Y yo sigo eligiéndote, igual que el primer día.",
+      "hoy": true
+    }
+  ],
+  "numeros": [
+    { "n": "11.825", "texto": "mensajes entre nosotros. Hablamos en **361 días distintos**, y eso que vivimos juntos." },
+    { "n": "580", "texto": "mensajes con algún **jajaja**. Tú 298, yo 282. Casi empate." },
+    { "n": "1.917", "texto": "fotos, audios y videos compartidos." },
+    { "n": "28", "texto": "veces que apareció la **lechita**. Con chocolate, de caja, o \"hacheme una lechita 👉\"." },
+    { "n": "7", "texto": "veces que me dijiste **\"sé que me lees y me ignoras\"**. Tenías razón en casi todas." },
+    { "n": "42", "texto": "menciones de **pancitos**. Pilar fundamental de este matrimonio." },
+    { "n": "11:00", "texto": "la hora en que más nos escribimos. El miércoles es nuestro día más conversado." },
+    { "n": "🤭 y 🫶🏼", "texto": "Tu emoji favorito (43 veces) y el mío." }
+  ],
+  "duelo": { "irma": 6356, "john": 5469 },
+  "meses": [
+    { "mes": "ago", "total": 1147 },
+    { "mes": "sep", "total": 770 },
+    { "mes": "oct", "total": 1308 },
+    { "mes": "nov", "total": 466 },
+    { "mes": "dic", "total": 1081 },
+    { "mes": "ene", "total": 616 },
+    { "mes": "feb", "total": 595 },
+    { "mes": "mar", "total": 466 },
+    { "mes": "abr", "total": 444 },
+    { "mes": "may", "total": 1185 },
+    { "mes": "jun", "total": 964 },
+    { "mes": "jul", "total": 1721 },
+    { "mes": "ago", "total": 690 },
+    { "mes": "sep", "total": 372 }
+  ],
+  "frases": [
+    { "quien": "I", "texto": "Al final de todo, es a ti a quien amo con mi vida 😍🥰", "pie": "**Tú**, 1 sep 2025" },
+    { "quien": "J", "texto": "Sos un sol. Mi sol. Mi ☀️", "pie": "**Yo**, 29 ene 2026" },
+    { "quien": "I", "texto": "Un abrazo y un te amo 💓😘", "pie": "**Tú**, 23 sep 2025" },
+    { "quien": "J", "texto": "Más de segura lo harás mejor que yo. Te amo. Sos mi toreta 🫶🏼", "pie": "**Yo**, 13 may 2026" },
+    { "quien": "I", "texto": "Solo pienso en que quería vivir esa navegación contigo, me hiciste falta 🥺", "pie": "**Tú**, 18 feb 2026" },
+    { "quien": "J", "texto": "Estaré pegado al wasapp por si necesitas cualquier cosa", "pie": "**Yo**, 8 jul 2026" },
+    { "quien": "I", "texto": "No jui a verte, pero te mando un besito por la oficina", "pie": "**Tú**, 10 abr 2026" },
+    { "quien": "J", "texto": "También te amo. Mi ailoyu 🫶🏼", "pie": "**Yo**, respondiendo a tu \"Amor de mi vida 😍\", 30 ago 2026" }
+  ],
+  "quiz": [
+    { "frase": "Sé que me lees y me ignoras", "quien": "I", "comentario": "Clásico tuyo. Siete veces este año." },
+    { "frase": "Cobras muy barato Valdés 🫠", "quien": "J", "comentario": "Fui yo, y lo sigo pensando." },
+    { "frase": "Me haces una lechita con chocolate 🥰?", "quien": "I", "comentario": "Obvio que fuiste tú." },
+    { "frase": "Sipele", "quien": "J", "comentario": "Mío, doce veces." },
+    { "frase": "Eres el mas mejol", "quien": "I", "comentario": "Tuyo, una mañana de manos congeladas." },
+    { "frase": "Vaaaaamos por esos milloncitos", "quien": "J", "comentario": "Yo, cuando quedaste admisible en todos los concursos." },
+    { "frase": "Tráeme comida será mejor", "quien": "I", "comentario": "Tú, a las 11 de la noche." },
+    { "frase": "Que chucha valdes. Sos una hambriada", "quien": "J", "comentario": "Culpable." },
+    { "frase": "Aprovechemos el impulso", "quien": "I", "comentario": "Tuyo, el mensaje más reciente de todo el chat." }
+  ],
+  "acuerdos": [
+    "El potito reconoce que Valdés es la mejor abogada de familia de la Región de Los Lagos, y se obliga a seguir diciéndolo aunque ella diga \"JAJAJA TU CREES\".",
+    "Toda solicitud de lechita formulada después de las 22:00 horas se entenderá acogida, con o sin chocolate.",
+    "El potito se compromete a leer los mensajes y, en la medida de lo humanamente posible, no ignorarlos.",
+    "Ambas partes mantendrán vigente la política de pancitos y la de prender el fueguito cuando corra viento.",
+    "Queda pendiente, y se agenda con carácter prioritario, esa navegación juntos por el lago.",
+    "El potito se obliga a querer, admirar y elegir a Valdés todos los días que vengan, sin plazo de término."
+  ]
+}

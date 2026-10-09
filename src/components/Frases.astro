@@ -1,0 +1,19 @@
+---
+import datos from '../data/datos.json';
+import { negrita } from '../lib/negrita';
+---
+
+<section>
+  <h2>Frases que guardo</h2>
+  <p class="lede">Entre cuentas, trámites y listas del súper, se colaron estas.</p>
+  <div class="quotes">
+    {
+      datos.frases.map((f) => (
+        <div class={`bubble ${f.quien === 'I' ? 'i' : 'j'}`}>
+          <q>{f.texto}</q>
+          <span class="who" set:html={negrita(f.pie)} />
+        </div>
+      ))
+    }
+  </div>
+</section>

@@ -1,0 +1,19 @@
+---
+import datos from '../data/datos.json';
+---
+
+<section id="historia">
+  <h2>Nuestra historia</h2>
+  <p class="lede">Desde que empezamos a vivir juntos no nos hemos separado mucho. Literalmente.</p>
+  <ol class="timeline">
+    {
+      datos.hitos.map((h) => (
+        <li class={h.hoy ? 'today' : undefined}>
+          <span class="when">{h.cuando}</span>
+          <h3>{h.titulo}</h3>
+          <p>{h.texto}</p>
+        </li>
+      ))
+    }
+  </ol>
+</section>

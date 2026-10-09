@@ -1,0 +1,57 @@
+---
+import datos from '../data/datos.json';
+import { negrita } from '../lib/negrita';
+
+const { irma, john } = datos.duelo;
+const total = irma + john;
+const maximo = Math.max(...datos.meses.map((m) => m.total));
+---
+
+<section>
+  <div class="stats-wrap">
+    <h2>Nuestro año en números</h2>
+    <p class="lede">Del 1 de agosto de 2025 al 18 de septiembre de 2026, según nuestro WhatsApp.</p>
+
+    <div class="big">
+      {
+        datos.numeros.map((n) => (
+          <div class="stat">
+            <div class="n">{n.n}</div>
+            <p set:html={negrita(n.texto)} />
+          </div>
+        ))
+      }
+    </div>
+
+    <div class="duel">
+      <div class="bar" role="img" aria-label={`Irma escribió ${irma} mensajes, John ${john}`}>
+        <span class="i" style={`width:${((irma / total) * 100).toFixed(2)}%`}>
+          Tú {irma.toLocaleString('es-CL')}
+        </span>
+        <span class="j" style={`width:${((john / total) * 100).toFixed(2)}%`}>
+          Yo {john.toLocaleString('es-CL')}
+        </span>
+      </div>
+      <p>Ganas tú, como en todas las discusiones.</p>
+    </div>
+
+    <div class="chart">
+      <h3>Mensajes por mes</h3>
+      <div class="bars" role="img" aria-label="Gráfico de mensajes por mes, con peak en julio de 2026">
+        {
+          datos.meses.map((m) => (
+            <div
+              class={m.total === maximo ? 'peak' : undefined}
+              style={`height:${((m.total / maximo) * 100).toFixed(1)}%`}
+              title={`${m.mes}: ${m.total.toLocaleString('es-CL')} mensajes`}
+            />
+          ))
+        }
+      </div>
+      <div class="months" aria-hidden="true">
+        {datos.meses.map((m) => <span>{m.mes}</span>)}
+      </div>
+      <p class="note">El peak fue julio de 2026, y el día récord el 31 de julio, con 305 mensajes.</p>
+    </div>
+  </div>
+</section>

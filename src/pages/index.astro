@@ -1,0 +1,28 @@
+---
+export const prerender = false;
+
+import Base from '../layouts/Base.astro';
+import Hero from '../components/Hero.astro';
+import Historia from '../components/Historia.astro';
+import Numeros from '../components/Numeros.astro';
+import Frases from '../components/Frases.astro';
+import Office from '../components/Office.astro';
+import Quiz from '../components/Quiz.astro';
+import Acta from '../components/Acta.astro';
+---
+
+<Base titulo="Feliz cumpleaños, Valdés">
+  <main>
+    <Hero />
+    <Historia />
+    <Numeros />
+    <Frases />
+    <Office />
+    <Quiz />
+    <Acta />
+    <footer>
+      <p class="f">Feliz cumpleaños, mi sol 🌻</p>
+      <p>Te amo. Tu potito.</p>
+    </footer>
+  </main>
+</Base>

@@ -1,0 +1,52 @@
+---
+// El girasol se arma en el servidor: pétalos y semillas salen ya en el HTML,
+// sin JavaScript en el cliente.
+const N = 21;
+const petalos: { r: number; d: string; fill: string; delay: number }[] = [];
+
+function trazo(largo: number, ancho: number) {
+  const base = 200 - 70;
+  const punta = 200 - 88 - largo;
+  return `M200 ${base} C ${200 - ancho} ${200 - 90} ${200 - ancho * 0.6} ${punta + 18} 200 ${punta} C ${200 + ancho * 0.6} ${punta + 18} ${200 + ancho} ${200 - 90} 200 ${base} Z`;
+}
+
+for (let k = 0; k < N; k++) {
+  petalos.push({ r: (k * 360) / N + 8.5, d: trazo(78, 26), fill: 'var(--petal-deep)', delay: 0.15 + k * 0.035 });
+}
+for (let k = 0; k < N; k++) {
+  petalos.push({ r: (k * 360) / N, d: trazo(92, 24), fill: 'var(--petal)', delay: 0.5 + k * 0.045 });
+}
+
+const dorado = Math.PI * (3 - Math.sqrt(5));
+const semillas: { cx: string; cy: string; r: string; fill: string }[] = [];
+for (let s = 0; s < 260; s++) {
+  const rad = 5.2 * Math.sqrt(s);
+  if (rad > 84) break;
+  const a = s * dorado;
+  semillas.push({
+    cx: (200 + rad * Math.cos(a)).toFixed(2),
+    cy: (200 + rad * Math.sin(a)).toFixed(2),
+    r: (1.4 + rad / 60).toFixed(2),
+    fill: s % 3 === 0 ? '#8A5A24' : '#6B4219',
+  });
+}
+---
+
+<svg id="flower" viewBox="0 0 400 400" role="img" aria-label="Un girasol">
+  <g>
+    {
+      petalos.map((p) => (
+        <path
+          class="petal"
+          d={p.d}
+          fill={p.fill}
+          style={`--r:${p.r}deg;transform:rotate(${p.r}deg);animation-delay:${p.delay}s`}
+        />
+      ))
+    }
+  </g>
+  <circle cx="200" cy="200" r="88" fill="var(--seed)"></circle>
+  <g>
+    {semillas.map((s) => <circle cx={s.cx} cy={s.cy} r={s.r} fill={s.fill} />)}
+  </g>
+</svg>

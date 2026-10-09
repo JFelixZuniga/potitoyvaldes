@@ -1,0 +1,91 @@
+---
+import datos from '../data/datos.json';
+---
+
+<section>
+  <h2>¿Quién lo dijo?</h2>
+  <p class="lede">Frases reales de nuestro chat. A ver cuánto te acuerdas.</p>
+  <div class="quiz" id="quiz" data-preguntas={JSON.stringify(datos.quiz)}>
+    <div class="progress" id="qprog"></div>
+    <div class="phrase" id="qphrase"></div>
+    <div class="choices">
+      <button type="button" data-a="I">Valdés</button>
+      <button type="button" data-a="J">Potito</button>
+    </div>
+    <div class="feedback" id="qfb" aria-live="polite"></div>
+    <button type="button" class="next" id="qnext">Siguiente</button>
+  </div>
+</section>
+
+<script>
+  type Pregunta = { frase: string; quien: 'I' | 'J'; comentario: string };
+
+  const quiz = document.getElementById('quiz');
+  const preguntas: Pregunta[] = JSON.parse(quiz?.dataset.preguntas ?? '[]');
+  const prog = document.getElementById('qprog')!;
+  const phrase = document.getElementById('qphrase')!;
+  const fb = document.getElementById('qfb')!;
+  const next = document.getElementById('qnext') as HTMLButtonElement;
+  const botones = Array.from(document.querySelectorAll<HTMLButtonElement>('.choices button'));
+
+  let i = 0;
+  let puntos = 0;
+  let respondida = false;
+
+  function pintar() {
+    respondida = false;
+    fb.textContent = '';
+    next.style.visibility = 'hidden';
+    botones.forEach((b) => {
+      b.className = '';
+      b.disabled = false;
+      b.style.display = '';
+    });
+    prog.textContent = `Frase ${i + 1} de ${preguntas.length}`;
+    phrase.textContent = `"${preguntas[i].frase}"`;
+  }
+
+  botones.forEach((b) => {
+    b.addEventListener('click', () => {
+      if (respondida) return;
+      respondida = true;
+      const correcta = b.dataset.a === preguntas[i].quien;
+      if (correcta) puntos++;
+      b.className = correcta ? 'ok' : 'no';
+      botones.forEach((x) => {
+        x.disabled = true;
+        if (x.dataset.a === preguntas[i].quien) x.className = 'ok';
+      });
+      fb.textContent = (correcta ? '¡Bien! ' : 'Nop. ') + preguntas[i].comentario;
+      next.textContent = i < preguntas.length - 1 ? 'Siguiente' : 'Ver resultado';
+      next.style.visibility = 'visible';
+      next.focus();
+    });
+  });
+
+  next.addEventListener('click', () => {
+    i++;
+    if (i < preguntas.length) {
+      pintar();
+      return;
+    }
+    prog.textContent = 'Resultado';
+    phrase.textContent = `${puntos} de ${preguntas.length}`;
+    botones.forEach((b) => (b.style.display = 'none'));
+    fb.textContent =
+      puntos === preguntas.length
+        ? 'Perfecto. Nos conocemos demasiado.'
+        : puntos >= 6
+          ? 'Muy bien, Valdés. Casi nada se te escapa.'
+          : 'Igual te amo, aunque no te acuerdes de nada.';
+    next.textContent = 'Jugar de nuevo';
+    next.onclick = () => {
+      i = 0;
+      puntos = 0;
+      next.onclick = null;
+      pintar();
+    };
+  });
+
+  pintar();
+</script>

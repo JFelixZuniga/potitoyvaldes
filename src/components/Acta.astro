@@ -1,0 +1,38 @@
+---
+import datos from '../data/datos.json';
+---
+
+<section>
+  <h2>Un acuerdo, para ti</h2>
+  <p class="lede">Tú que cierras acuerdos para otras familias, este es el nuestro.</p>
+  <article class="acta">
+    <svg class="stamp" viewBox="0 0 100 100" aria-hidden="true">
+      <circle cx="50" cy="50" r="44" fill="none" stroke="var(--petal-deep)" stroke-width="4"></circle>
+      <circle cx="50" cy="50" r="36" fill="none" stroke="var(--petal-deep)" stroke-width="1.5"></circle>
+      <text x="50" y="47" text-anchor="middle" font-family="Caprasimo, Georgia, serif" font-size="13" fill="var(--petal-deep)">ACUERDO</text>
+      <text x="50" y="63" text-anchor="middle" font-family="Caprasimo, Georgia, serif" font-size="13" fill="var(--petal-deep)">TOTAL</text>
+    </svg>
+    <div class="head">
+      <h3>Acta de acuerdo de mediación</h3>
+      <p>Fresia, {datos.cumpleanos}</p>
+    </div>
+    <p>
+      Comparecen doña <strong>Irma Soledad Valdés Arias</strong>, abogada y mediadora familiar, en
+      adelante "Valdés", y don <strong>John Félix Zúñiga Aburto</strong>, abogado y desarrollador, en
+      adelante "el potito", casados entre sí desde el 13 de septiembre de 2024 y en convivencia
+      ininterrumpida desde el 1 de enero de 2020.
+    </p>
+    <p>Las partes, libre y voluntariamente, acuerdan lo siguiente:</p>
+    <ol>
+      {datos.acuerdos.map((a) => <li>{a}</li>)}
+    </ol>
+    <p>
+      Leída el acta, las partes la aprueban en todas sus partes y firman con un abrazo, un te amo y
+      una lechita.
+    </p>
+    <div class="firmas">
+      <div>Valdés<em>la cumpleañera</em></div>
+      <div>El potito<em>tu esposo</em></div>
+    </div>
+  </article>
+</section>

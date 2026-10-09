@@ -1,0 +1,34 @@
+---
+export const prerender = false;
+
+import Base from '../layouts/Base.astro';
+
+// ?e=1 marca un intento fallido; ?e=2 muestra la pista.
+const error = Astro.url.searchParams.get('e');
+const mensaje =
+  error === '2'
+    ? 'Pista: fue un día 13, hace dos años.'
+    : error
+      ? 'Mmm, esa no es. Piénsalo bien, Valdés.'
+      : '';
+---
+
+<Base titulo="Solo para Valdés">
+  <div class="gate">
+    <div class="gate-box">
+      <svg class="bud" viewBox="0 0 100 100" aria-hidden="true">
+        <circle cx="50" cy="50" r="40" fill="var(--petal)"></circle>
+        <circle cx="50" cy="50" r="22" fill="var(--seed)"></circle>
+      </svg>
+      <h1>Solo para Valdés</h1>
+      <p>Para entrar, dime qué día nos casamos.</p>
+      <form class="gate-form" method="POST" action="/api/entrar" autocomplete="off">
+        <label for="fecha" style="position:absolute;left:-9999px">Fecha de matrimonio</label>
+        <input id="fecha" name="fecha" inputmode="numeric" placeholder="dd/mm/aaaa" required />
+        <input type="hidden" name="intentos" value={error === '1' ? '2' : '1'} />
+        <button type="submit">Entrar</button>
+      </form>
+      <div class="hint" aria-live="polite">{mensaje}</div>
+    </div>
+  </div>
+</Base>
