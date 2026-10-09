@@ -1,6 +1,22 @@
+---
+import datos from '../data/datos.json';
+
+// La tetera de Jim: la nota que él se guardó, aquí sí se entrega.
+const { nota, firma } = datos.tetera;
+---
+
 <section>
   <div class="office">
-    <div class="teapot" aria-hidden="true">🫖</div>
+    <button
+      type="button"
+      class="teapot"
+      id="tetera"
+      aria-expanded="false"
+      aria-controls="nota-tetera"
+      aria-label="Abrir la tetera"
+    >
+      <span class="tapa" aria-hidden="true">🫖</span>
+    </button>
     <div>
       <h2>¿Por qué "Valdés"?</h2>
       <p>
@@ -8,6 +24,36 @@
         Dunder Mifflin que ella era la persona, yo lo sé cada día en nuestra oficina compartida de la
         casa.
       </p>
+      <p class="psst">Psst… Jim se guardó la nota de la tetera. Yo no. Tócala.</p>
+    </div>
+    <div class="nota" id="nota-tetera" hidden>
+      {nota.map((linea) => <p>{linea}</p>)}
+      <p class="firma">{firma}</p>
     </div>
   </div>
 </section>
+
+<script>
+  const tetera = document.getElementById('tetera') as HTMLButtonElement;
+  const nota = document.getElementById('nota-tetera')!;
+
+  tetera.addEventListener('click', () => {
+    const abrir = tetera.getAttribute('aria-expanded') !== 'true';
+    tetera.setAttribute('aria-expanded', String(abrir));
+    tetera.setAttribute('aria-label', abrir ? 'Cerrar la tetera' : 'Abrir la tetera');
+    tetera.classList.add('vista');
+
+    if (abrir) {
+      nota.hidden = false;
+      // Un cuadro después, para que la transición parta desde el estado cerrado.
+      requestAnimationFrame(() => requestAnimationFrame(() => nota.classList.add('abierta')));
+    } else {
+      nota.classList.remove('abierta');
+      // Se oculta al terminar de cerrarse (o de inmediato si no hay transición),
+      // salvo que la hayan vuelto a abrir entremedio.
+      setTimeout(() => {
+        if (!nota.classList.contains('abierta')) nota.hidden = true;
+      }, 450);
+    }
+  });
+</script>

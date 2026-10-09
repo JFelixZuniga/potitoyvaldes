@@ -31,21 +31,52 @@ function toHex(buffer: ArrayBuffer): string {
   return [...new Uint8Array(buffer)].map((b) => b.toString(16).padStart(2, '0')).join('');
 }
 
-/** Normaliza lo que escriba ella: "13/09/2024", "13-09-2024", "13092024". */
-export function normalizar(valor: string): string {
-  return valor
+const MESES = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
+
+type Fecha = { d: number; m: number; a: number };
+
+/**
+ * Interpreta lo que escriba ella, sea como sea: "13/09/2024", "13/9/24",
+ * "13-09-2024", "13092024", "1392024", "13 de septiembre de 2024",
+ * "13 sept 2024" o "2024-09-13". Devuelve null si no se puede leer.
+ */
+export function leerFecha(valor: string): Fecha | null {
+  let t = valor
     .toLowerCase()
     .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace(/\D/g, '');
+    .replace(/[\u0300-\u036f]/g, '');
+
+  // Meses con nombre ("septiembre", "sept", "set") pasan a n\u00famero.
+  t = t.replace(/[a-z]+/g, (palabra) => {
+    const i = MESES.indexOf(palabra === 'set' || palabra.startsWith('setiem') ? 'sep' : palabra.slice(0, 3));
+    return i >= 0 && palabra.length >= 3 ? ` ${i + 1} ` : ' ';
+  });
+
+  const partes = t.match(/\d+/g) ?? [];
+  const anio = (a: number) => (a < 100 ? 2000 + a : a);
+
+  if (partes.length >= 3) {
+    const [x, y, z] = partes.map(Number);
+    // aaaa-mm-dd (lo que entrega un selector de fecha) o dd-mm-aaaa.
+    return partes[0].length === 4 ? { d: z, m: y, a: x } : { d: x, m: y, a: anio(z) };
+  }
+
+  if (partes.length === 1) {
+    const s = partes[0];
+    // Todo junto: ddmmaaaa, ddmaaaa, ddmmaa o ddmaa.
+    const a = s.length >= 7 ? s.slice(-4) : s.slice(-2);
+    const dm = s.slice(0, s.length - a.length);
+    if (dm.length < 3 || dm.length > 4) return null;
+    return { d: Number(dm.slice(0, 2)), m: Number(dm.slice(2)), a: anio(Number(a)) };
+  }
+
+  return null;
 }
 
 export function esRespuestaCorrecta(valor: string, esperado: string): boolean {
-  const v = normalizar(valor);
-  const e = normalizar(esperado);
-  if (!v) return false;
-  // Acepta dd/mm/aaaa y dd/mm/aa (13092024 y 130924).
-  return v === e || (e.length === 8 && v === e.slice(0, 4) + e.slice(6));
+  const v = leerFecha(valor);
+  const e = leerFecha(esperado);
+  return !!v && !!e && v.d === e.d && v.m === e.m && v.a === e.a;
 }
 
 export async function firmarCookie(secret: string): Promise<string> {

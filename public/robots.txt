@@ -1,2 +1,10 @@
+# Nada se indexa. Solo se deja leer la portada del gate y su imagen,
+# para que la vista previa del link en WhatsApp salga con el girasol.
+User-agent: facebookexternalhit
+User-agent: WhatsApp
+Allow: /entrada
+Allow: /og.png
+Disallow: /
+
 User-agent: *
 Disallow: /

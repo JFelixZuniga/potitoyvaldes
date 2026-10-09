@@ -2,7 +2,7 @@ import { defineMiddleware } from 'astro:middleware';
 import { COOKIE_NAME, SECRETO, cookieValida } from './lib/auth';
 
 /** Rutas accesibles sin haber pasado el gate. */
-const ABIERTAS = ['/entrada', '/api/entrar', '/_astro', '/favicon.svg', '/robots.txt'];
+const ABIERTAS = ['/entrada', '/api/entrar', '/_astro', '/favicon.svg', '/og.png', '/robots.txt'];
 
 export const onRequest = defineMiddleware(async (context, next) => {
   const ruta = context.url.pathname;

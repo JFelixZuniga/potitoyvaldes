@@ -102,8 +102,20 @@ h2{font-size:clamp(2rem,6vw,3rem);margin-bottom:.9rem}
 .office{display:grid;grid-template-columns:auto 1fr;gap:1.4rem;align-items:center;background:var(--stem);color:#F7F3E3;border-radius:32px;padding:2.2rem 1.8rem}
 .office h2{color:#fff;font-size:clamp(1.7rem,5vw,2.4rem)}
 .office p{color:#E5E7D7;max-width:32rem}
-.teapot{font-size:3.4rem;line-height:1}
-@media (max-width:540px){.office{grid-template-columns:1fr}}
+.teapot{font-size:3.4rem;line-height:1;background:none;border:0;padding:.3rem;cursor:pointer;border-radius:50%;transition:transform .2s cubic-bezier(.3,1.5,.5,1)}
+.teapot .tapa{display:inline-block;animation:tetera 4s ease-in-out 2s infinite}
+.teapot.vista .tapa{animation:none}
+.teapot:hover{transform:scale(1.08)}
+.teapot:active{transform:scale(.94)}
+.teapot[aria-expanded="true"]{transform:rotate(-14deg)}
+@keyframes tetera{0%,82%,100%{transform:rotate(0)}86%{transform:rotate(-9deg)}90%{transform:rotate(7deg)}94%{transform:rotate(-4deg)}}
+.office .psst{margin-top:.8rem;font-size:.95rem;font-style:italic;color:#F5D98A}
+.nota{grid-column:1/-1;background:#FFFDF7;color:#2A2B25;border-radius:4px;padding:1.6rem 1.5rem 1.4rem;box-shadow:0 14px 30px -18px rgba(0,0,0,.55);font-family:var(--body);transform-origin:top center;opacity:0;transform:translateY(-10px) scaleY(.92) rotate(-1deg);transition:opacity .35s ease,transform .45s cubic-bezier(.3,1.4,.5,1)}
+.nota.abierta{opacity:1;transform:none}
+.nota p{color:#2A2B25;max-width:none;margin-bottom:.7rem}
+.nota p:first-child{font-family:var(--display);font-size:1.4rem}
+.nota .firma{text-align:right;font-family:var(--display);font-size:1.25rem;color:#D9820A;margin:1rem 0 0}
+@media (max-width:540px){.office{grid-template-columns:1fr}.teapot{justify-self:start}}
 
 /* Quiz */
 .quiz{margin-top:2rem;background:var(--paper);border-radius:28px;padding:2rem 1.5rem;text-align:center}

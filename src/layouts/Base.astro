@@ -5,6 +5,14 @@ interface Props {
   titulo: string;
 }
 const { titulo } = Astro.props;
+
+// Vista previa del link (WhatsApp y otros). Es la misma para todas las páginas:
+// quien no ha pasado el gate cae en /entrada igual.
+const preview = {
+  titulo: 'Solo para Valdés 🌻',
+  descripcion: 'Un regalo de cumpleaños, hecho con nuestras propias palabras.',
+  imagen: new URL('/og.png', Astro.url.origin).href,
+};
 ---
 
 <!doctype html>
@@ -14,6 +22,19 @@ const { titulo } = Astro.props;
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="robots" content="noindex, nofollow" />
     <title>{titulo}</title>
+    <meta name="description" content={preview.descripcion} />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="es_CL" />
+    <meta property="og:title" content={preview.titulo} />
+    <meta property="og:description" content={preview.descripcion} />
+    <meta property="og:url" content={Astro.url.origin} />
+    <meta property="og:image" content={preview.imagen} />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Un girasol y el texto Solo para Valdés" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="theme-color" content="#F2B31B" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
