@@ -10,7 +10,9 @@
     {
       "cuando": "5 de septiembre de 2022",
       "titulo": "Rumbo al sur",
-      "texto": "Dejamos Santiago y llegamos a Puerto Montt. Cambiamos el smog por la lluvia, y nunca miramos atrás."
+      "texto": "Dejamos Santiago y llegamos a Puerto Montt. Cambiamos el smog por la lluvia, y nunca miramos atrás.",
+      "foto": "lago",
+      "pie": "Tú, yo y el volcán de fondo"
     },
     {
       "cuando": "Junio de 2023",
@@ -31,6 +33,8 @@
       "cuando": "10 de octubre de 2026",
       "titulo": "Hoy, tu día",
       "texto": "Y yo sigo eligiéndote, igual que el primer día.",
+      "foto": "casa",
+      "pie": "Mi lugar favorito: pegadito a ti",
       "hoy": true
     }
   ],

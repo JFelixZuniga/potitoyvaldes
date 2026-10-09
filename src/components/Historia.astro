@@ -1,5 +1,10 @@
 ---
 import datos from '../data/datos.json';
+import lago from '../assets/fotos/lago.webp';
+import casa from '../assets/fotos/casa.webp';
+
+// Fotos que acompañan algunos hitos. En datos.json, "foto" es una de estas claves.
+const fotos: Record<string, ImageMetadata> = { lago, casa };
 ---
 
 <section id="historia">
@@ -7,13 +12,29 @@ import datos from '../data/datos.json';
   <p class="lede">Desde que empezamos a vivir juntos no nos hemos separado mucho. Literalmente.</p>
   <ol class="timeline">
     {
-      datos.hitos.map((h) => (
-        <li class={h.hoy ? 'today' : undefined}>
-          <span class="when">{h.cuando}</span>
-          <h3>{h.titulo}</h3>
-          <p>{h.texto}</p>
-        </li>
-      ))
+      datos.hitos.map((h) => {
+        const foto = 'foto' in h && h.foto ? fotos[h.foto] : undefined;
+        return (
+          <li class={h.hoy ? 'today' : undefined}>
+            <span class="when">{h.cuando}</span>
+            <h3>{h.titulo}</h3>
+            <p>{h.texto}</p>
+            {foto && (
+              <figure class="polaroid">
+                <img
+                  src={foto.src}
+                  width={foto.width}
+                  height={foto.height}
+                  alt={'pie' in h && h.pie ? h.pie : ''}
+                  loading="lazy"
+                  decoding="async"
+                />
+                {'pie' in h && h.pie && <figcaption>{h.pie}</figcaption>}
+              </figure>
+            )}
+          </li>
+        );
+      })
     }
   </ol>
 </section>

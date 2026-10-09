@@ -13,6 +13,13 @@ export const onRequest = defineMiddleware(async (context, next) => {
 
   const autorizada = await cookieValida(context.cookies.get(COOKIE_NAME)?.value, SECRETO);
   if (!autorizada) {
+    // En la portada se muestra el gate ahí mismo, sin redirigir: así la vista
+    // previa de WhatsApp lee sus etiquetas og: directo del link compartido.
+    if (ruta === '/' && context.request.method === 'GET') {
+      const gate = await next('/entrada');
+      gate.headers.set('Cache-Control', 'private, no-store');
+      return gate;
+    }
     return context.redirect('/entrada', 302);
   }
 
