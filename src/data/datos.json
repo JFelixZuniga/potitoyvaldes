@@ -98,6 +98,13 @@
     ],
     "firma": "Tu potito"
   },
+  "mascotas": [
+    { "foto": "mamita", "nombre": "Mamita" },
+    { "foto": "kame", "nombre": "Kame" },
+    { "foto": "brad-pit", "nombre": "Brad Pit" },
+    { "foto": "lloron", "nombre": "Llorón" },
+    { "foto": "margarita", "nombre": "Margarita" }
+  ],
   "acuerdos": [
     "El potito reconoce que Valdés es la mejor abogada de familia de la Región de Los Lagos, y se obliga a seguir diciéndolo aunque ella diga \"JAJAJA TU CREES\".",
     "Toda solicitud de lechita formulada después de las 22:00 horas se entenderá acogida, con o sin chocolate.",

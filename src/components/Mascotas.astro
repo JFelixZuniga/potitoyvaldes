@@ -1,0 +1,56 @@
+---
+import datos from '../data/datos.json';
+
+// Las mascotas se asoman por el borde de la pantalla, una por sección y en zig zag:
+// la primera por la izquierda, la segunda por la derecha, y así. La foto está en
+// src/assets/mascotas/<foto>.webp; si "nombre" viene vacío, no se muestra la etiqueta.
+const archivos = import.meta.glob<{ default: ImageMetadata }>('../assets/mascotas/*.webp', { eager: true });
+const mascotas = datos.mascotas.map((m) => ({
+  ...m,
+  img: archivos[`../assets/mascotas/${m.foto}.webp`]?.default,
+}));
+---
+
+<div class="mascotas" aria-hidden="true">
+  {
+    mascotas.map(
+      (m, i) =>
+        m.img && (
+          <figure class={`asomo ${i % 2 === 0 ? 'izq' : 'der'}`} data-i={i}>
+            <img src={m.img.src} width={m.img.width} height={m.img.height} alt="" decoding="async" />
+            {m.nombre && <figcaption>{m.nombre}</figcaption>}
+          </figure>
+        ),
+    )
+  }
+</div>
+
+<script>
+  // Cada sección después de la portada tiene su mascota, en orden. Se asoma la de
+  // la sección que cruza la mitad de la pantalla; las demás vuelven a esconderse.
+  const asomos = Array.from(document.querySelectorAll<HTMLElement>('.asomo'));
+  const secciones = Array.from(document.querySelectorAll<HTMLElement>('main > section:not(.hero)')).slice(
+    0,
+    asomos.length,
+  );
+
+  // En el celular la foto tapa algo de texto, así que se asoma un rato y se vuelve a esconder.
+  const movil = window.matchMedia('(max-width: 540px)');
+  const timers = new Map<HTMLElement, number>();
+
+  const obs = new IntersectionObserver(
+    (entradas) => {
+      for (const e of entradas) {
+        const asomo = asomos[secciones.indexOf(e.target as HTMLElement)];
+        if (!asomo) continue;
+        clearTimeout(timers.get(asomo));
+        asomo.classList.toggle('visible', e.isIntersecting);
+        if (e.isIntersecting && movil.matches) {
+          timers.set(asomo, window.setTimeout(() => asomo.classList.remove('visible'), 5000));
+        }
+      }
+    },
+    { rootMargin: '-45% 0px -45% 0px' },
+  );
+  secciones.forEach((s) => obs.observe(s));
+</script>

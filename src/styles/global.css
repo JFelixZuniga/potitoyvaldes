@@ -154,3 +154,24 @@ footer .f{font-family:var(--display);font-size:2rem;color:var(--ink)}
   *{animation:none!important;transition:none!important}
   .petal{opacity:1!important;transform:rotate(var(--r))!important}
 }
+
+/* ---------- Mascotas que se asoman ---------- */
+.asomo{--w:clamp(92px,13vw,168px);position:fixed;bottom:14vh;width:var(--w);z-index:40;pointer-events:none;margin:0;transition:transform .45s cubic-bezier(.5,0,.75,0)}
+.asomo img{display:block;width:100%;height:auto;aspect-ratio:4/5;object-fit:cover;border:5px solid #FFFDF7;border-radius:20px;box-shadow:0 14px 28px -14px rgba(30,35,30,.6)}
+.asomo figcaption{position:absolute;bottom:-.9rem;left:50%;translate:-50% 0;white-space:nowrap;background:var(--petal);color:var(--seed);font-family:var(--display);font-size:.95rem;line-height:1;padding:.35rem .75rem .4rem;border-radius:999px;box-shadow:0 4px 10px -4px rgba(30,35,30,.5)}
+.asomo.izq{left:0;transform-origin:bottom left;transform:translateX(calc(-100% - 3.5rem)) rotate(0deg)}
+.asomo.der{right:0;transform-origin:bottom right;transform:translateX(calc(100% + 3.5rem)) rotate(0deg)}
+/* La etiqueta va hacia el lado visible de la foto, para que no quede cortada. */
+.asomo.izq figcaption{left:auto;right:-.6rem;translate:none;rotate:-14deg}
+.asomo.der figcaption{left:-.6rem;translate:none;rotate:14deg}
+.asomo.visible{transition:transform .8s cubic-bezier(.34,1.56,.64,1)}
+.asomo.izq.visible{transform:translateX(-30%) rotate(14deg)}
+.asomo.der.visible{transform:translateX(30%) rotate(-14deg)}
+@media (max-width:540px){
+  .asomo{--w:84px;bottom:9vh}
+  .asomo figcaption{font-size:.85rem}
+  .asomo.izq figcaption{right:-1.8rem}
+  .asomo.der figcaption{left:-1.8rem}
+  .asomo.izq.visible{transform:translateX(-28%) rotate(14deg)}
+  .asomo.der.visible{transform:translateX(28%) rotate(-14deg)}
+}
