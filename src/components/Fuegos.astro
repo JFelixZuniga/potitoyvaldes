@@ -1,0 +1,158 @@
+---
+// Fuegos artificiales al llegar al final de la página. Un canvas fijo encima de
+// todo (sin capturar clics) que se enciende una sola vez cuando el footer entra
+// en pantalla. Si el sistema pide menos movimiento, la función es más corta.
+---
+
+<canvas id="fuegos" aria-hidden="true"></canvas>
+
+<style>
+  #fuegos {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 50;
+  }
+</style>
+
+<script>
+  const canvas = document.getElementById('fuegos') as HTMLCanvasElement;
+  const ctx = canvas.getContext('2d')!;
+  const footer = document.querySelector('footer');
+  const quieto = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Colores de girasol, más algunos acentos para que se vea festivo.
+  const COLORES = ['#F2B31B', '#F5BD2E', '#D9820A', '#FFE08A', '#FF7A59', '#FFFFFF', '#7FA676'];
+  const DURACION = quieto ? 2500 : 6500; // ms lanzando cohetes
+  const GRAVEDAD = 0.045;
+
+  type Cohete = { x: number; y: number; vy: number; destinoY: number; color: string };
+  type Chispa = { x: number; y: number; vx: number; vy: number; vida: number; color: string; tam: number };
+
+  let cohetes: Cohete[] = [];
+  let chispas: Chispa[] = [];
+  let ancho = 0;
+  let alto = 0;
+  let inicio = 0;
+  let proximo = 0;
+  let animando = false;
+
+  function ajustar() {
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    ancho = window.innerWidth;
+    alto = window.innerHeight;
+    canvas.width = ancho * dpr;
+    canvas.height = alto * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+
+  const azar = (min: number, max: number) => min + Math.random() * (max - min);
+  const color = () => COLORES[Math.floor(Math.random() * COLORES.length)];
+
+  function lanzar() {
+    cohetes.push({
+      x: azar(ancho * 0.15, ancho * 0.85),
+      y: alto,
+      vy: -azar(9, 12.5) * (alto / 800),
+      destinoY: azar(alto * 0.12, alto * 0.45),
+      color: color(),
+    });
+  }
+
+  function explotar(c: Cohete) {
+    const n = Math.round(azar(55, 85));
+    const fuerza = azar(2.6, 4.2) * Math.min(1, ancho / 700 + 0.35);
+    const segundo = Math.random() < 0.4 ? color() : c.color;
+    for (let i = 0; i < n; i++) {
+      const a = (i / n) * Math.PI * 2 + azar(-0.05, 0.05);
+      const v = fuerza * azar(0.55, 1);
+      chispas.push({
+        x: c.x,
+        y: c.y,
+        vx: Math.cos(a) * v,
+        vy: Math.sin(a) * v,
+        vida: 1,
+        color: i % 3 === 0 ? segundo : c.color,
+        tam: azar(1.4, 2.6),
+      });
+    }
+  }
+
+  function cuadro(t: number) {
+    const transcurrido = t - inicio;
+
+    if (transcurrido < DURACION && t >= proximo) {
+      lanzar();
+      if (Math.random() < 0.3) lanzar();
+      proximo = t + azar(280, 650);
+    }
+
+    // Borrado con transparencia para dejar estelas sin tapar la página.
+    ctx.globalCompositeOperation = 'destination-out';
+    ctx.fillStyle = 'rgba(0,0,0,0.22)';
+    ctx.fillRect(0, 0, ancho, alto);
+    ctx.globalCompositeOperation = 'lighter';
+
+    cohetes = cohetes.filter((c) => {
+      c.y += c.vy;
+      c.vy *= 0.985;
+      ctx.fillStyle = c.color;
+      ctx.beginPath();
+      ctx.arc(c.x, c.y, 2.2, 0, Math.PI * 2);
+      ctx.fill();
+      if (c.y <= c.destinoY || c.vy > -1.5) {
+        explotar(c);
+        return false;
+      }
+      return true;
+    });
+
+    chispas = chispas.filter((p) => {
+      p.vx *= 0.975;
+      p.vy = p.vy * 0.975 + GRAVEDAD;
+      p.x += p.vx;
+      p.y += p.vy;
+      p.vida -= 0.012;
+      if (p.vida <= 0) return false;
+      ctx.globalAlpha = p.vida;
+      ctx.fillStyle = p.color;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.tam, 0, Math.PI * 2);
+      ctx.fill();
+      return true;
+    });
+    ctx.globalAlpha = 1;
+
+    if (transcurrido < DURACION || cohetes.length || chispas.length) {
+      requestAnimationFrame(cuadro);
+    } else {
+      ctx.clearRect(0, 0, ancho, alto);
+      animando = false;
+    }
+  }
+
+  function encender() {
+    if (animando) return;
+    animando = true;
+    ajustar();
+    inicio = performance.now();
+    proximo = inicio;
+    requestAnimationFrame(cuadro);
+  }
+
+  if (footer) {
+    window.addEventListener('resize', ajustar);
+    const obs = new IntersectionObserver(
+      (entradas) => {
+        if (entradas.some((e) => e.isIntersecting)) {
+          obs.disconnect();
+          encender();
+        }
+      },
+      { threshold: 0.6 },
+    );
+    obs.observe(footer);
+  }
+</script>
